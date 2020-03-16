@@ -1,6 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const bp = require('body-parser');
+const passport = require('passport');
 const { connect } = require('mongoose');
 const { success, error } = require('consola');
 
@@ -14,10 +15,11 @@ const app = express();
 app.use(cors());
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
+app.use(passport.initialize());
+
+require('./middlewares/passport')(passport);
 
 //User Router Middleware
-//const userRouter = require('./routes/users');
-
 app.use('/api/users', require('./routes/users'));
 app.use('/api', (req, res) => {
     res.json({ message: "hello" });
